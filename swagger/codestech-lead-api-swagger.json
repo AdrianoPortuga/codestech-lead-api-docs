@@ -1,0 +1,340 @@
+﻿{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Codestech Lead API",
+    "description": "API oficial para recepção de leads e distribuição para integrações",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "default"
+        ],
+        "summary": "Health Ccheck",
+        "operationId": "health_ccheck_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/lead/codesagency": {
+      "post": {
+        "tags": [
+          "Lead Receiver"
+        ],
+        "summary": "Recebe lead do site (CodesAgency)",
+        "description": "Envie com header X-API-Token configurado em CODESAGENCY_API_TOKEN.",
+        "operationId": "receive_codesagency_lead_lead_codesagency_post",
+        "parameters": [
+          {
+            "name": "X-API-Token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Token de autenticação da Lead API (X-API-Token). Configure CODESAGENCY_API_TOKEN no Render.",
+              "title": "X-Api-Token"
+            },
+            "description": "Token de autenticação da Lead API (X-API-Token). Configure CODESAGENCY_API_TOKEN no Render."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LeadRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeadResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/lead/{cliente_slug}": {
+      "post": {
+        "tags": [
+          "Lead Receiver"
+        ],
+        "summary": "Recebe lead do site (cliente genérico)",
+        "description": "Envie com header X-API-Token se configurado para o cliente.",
+        "operationId": "receive_client_lead_lead__cliente_slug__post",
+        "parameters": [
+          {
+            "name": "cliente_slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cliente Slug"
+            }
+          },
+          {
+            "name": "X-API-Token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Token de autenticação da Lead API (X-API-Token).",
+              "title": "X-Api-Token"
+            },
+            "description": "Token de autenticação da Lead API (X-API-Token)."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LeadRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeadResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "LeadRequest": {
+        "properties": {
+          "nome": {
+            "type": "string",
+            "minLength": 2,
+            "title": "Nome",
+            "description": "Nome do lead"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          },
+          "telefone": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 60,
+                "minLength": 8
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Telefone"
+          },
+          "mensagem": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mensagem"
+          },
+          "origem": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origem",
+            "default": "site_codestech"
+          },
+          "fonte": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 120
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fonte"
+          },
+          "serviceId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 120
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Serviceid"
+          },
+          "enviadoEm": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 50
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enviadoem"
+          }
+        },
+        "type": "object",
+        "required": [
+          "nome",
+          "email"
+        ],
+        "title": "LeadRequest"
+      },
+      "LeadResponse": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success"
+          },
+          "duplicado": {
+            "type": "boolean",
+            "title": "Duplicado"
+          },
+          "forwarded_to": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Forwarded To"
+          },
+          "errors": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Errors"
+          }
+        },
+        "type": "object",
+        "required": [
+          "success",
+          "duplicado"
+        ],
+        "title": "LeadResponse"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}
