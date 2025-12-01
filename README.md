@@ -141,7 +141,7 @@ O roteamento é configurado pela Codestech com base no plano do cliente.
 
 Para dúvidas técnicas sobre integração com a Lead API:
 
-Email: codesschoolis@gmail.com
+Email: codesschoolia@gmail.com
 
 Telefone/WhatsApp: +351 923 120 032
 
