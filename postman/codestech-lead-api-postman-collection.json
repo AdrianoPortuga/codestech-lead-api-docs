@@ -1,1 +1,91 @@
-﻿{}
+﻿{
+  "info": {
+    "name": "Codestech Lead API – Postman Collection",
+    "_postman_id": "e9b4e3b7-2bd3-4b2d-9a32-111111111111",
+    "description": "Coleção oficial de testes para a Codestech Lead API.\n\nInclui:\n- POST /lead/codesagency\n- POST /lead/{cliente_slug}\n\nUse as variáveis {{base_url}} e {{api_token}} no ambiente do Postman.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "POST /lead/codesagency – teste simples",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-API-Token",
+            "value": "{{api_token}}",
+            "disabled": true
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nome\": \"Teste via Postman\",\n  \"email\": \"teste@example.com\",\n  \"telefone\": \"+351 900000000\",\n  \"empresa\": \"Empresa de Teste\",\n  \"mensagem\": \"Lead de teste enviado pela coleção do Postman.\",\n  \"origem\": \"postman-codesagency\",\n  \"segmento\": \"servicos\",\n  \"DataHora\": \"{{$isoTimestamp}}\",\n  \"data_envio\": \"{{$isoTimestamp}}\",\n  \"data\": \"{{$isoTimestamp}}\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/lead/codesagency",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "lead",
+            "codesagency"
+          ]
+        },
+        "description": "Envia um lead de teste para a rota padrão /lead/codesagency.\n\nPreencha as variáveis de ambiente:\n- base_url: URL pública da mini-API (ex: https://api.codestech.pt)\n- api_token: token da API, se a autenticação estiver ativa.\n\nOs campos DataHora, data_envio e data usam o {{$isoTimestamp}} do Postman para facilitar o teste."
+      },
+      "response": []
+    },
+    {
+      "name": "POST /lead/{cliente_slug} – teste genérico",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-API-Token",
+            "value": "{{api_token}}",
+            "disabled": true
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nome\": \"Lead Teste Cliente X\",\n  \"email\": \"lead.cliente.x@example.com\",\n  \"telefone\": \"+351 911111111\",\n  \"empresa\": \"Cliente X\",\n  \"mensagem\": \"Lead de teste enviado para rota específica do cliente.\",\n  \"origem\": \"postman-cliente-x\",\n  \"segmento\": \"clinica_estetica\",\n  \"DataHora\": \"{{$isoTimestamp}}\",\n  \"data_envio\": \"{{$isoTimestamp}}\",\n  \"data\": \"{{$isoTimestamp}}\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/lead/{{cliente_slug}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "lead",
+            "{{cliente_slug}}"
+          ]
+        },
+        "description": "Envia um lead de teste para uma rota específica de cliente, por exemplo /lead/clinica_face_mi.\n\nAntes de usar, defina no ambiente:\n- base_url (ex: https://api.codestech.pt)\n- cliente_slug (ex: clinica_face_mi)\n- api_token, se aplicável."
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://api.codestech.pt"
+    },
+    {
+      "key": "api_token",
+      "value": "CODESAGENCY_2025"
+    },
+    {
+      "key": "cliente_slug",
+      "value": "cliente_exemplo"
+    }
+  ]
+}
+
